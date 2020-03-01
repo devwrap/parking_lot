@@ -3,64 +3,84 @@ package dao;
 import model.Car;
 import model.ParkingSlot;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
-public class ParkingManager {
+public class ParkingManager<T extends Car> {
 
-    private int capacity;
+    private final int capacity;
     private int availability;
     private ParkingSlot parkingSlot;
-    private Map<Integer, Car> slotCarMap;
+    private Map<Integer, Optional<T>> slotCarMap;
     private static ParkingManager parkingManager = null;
 
     private ParkingManager(int capacity) {
         this.capacity = capacity;
         this.availability = capacity;
         this.parkingSlot = new ParkingSlot(capacity);
-        slotCarMap = new ConcurrentHashMap<Integer, Car>();
+        slotCarMap = new ConcurrentHashMap<>();
         for (int i = 1; i <= capacity; i++) {
-            slotCarMap.put(i, null);
+            slotCarMap.put(i, Optional.empty());
         }
     }
 
-    public static ParkingManager getInstance(int capacity) {
+    @SuppressWarnings("unchecked")
+    public static <T extends Car> ParkingManager<T> getInstance(int capacity) {
         if (parkingManager == null) {
             synchronized (ParkingManager.class) {
                 if (parkingManager == null) {
-                    return new ParkingManager(capacity);
+                    return new ParkingManager<T>(capacity);
                 }
             }
         }
         return parkingManager;
     }
 
-    public void park(Car car) {
-        if(this.availability == 0) {
+    public Boolean park(T car) {
+        if (this.availability == 0) {
             System.out.println("No parking slots available");
-            return;
+            return false;
         }
         // check for the slot availability in tree set
         int freeSlot = parkingSlot.getFreeSlot();
-        if (slotCarMap.containsValue(car)) {
-            System.out.println("Car already parked..");
-        } else {
-            slotCarMap.put(freeSlot, car);
-            availability--;
-            parkingSlot.removeSlot(freeSlot);
+
+//        slotCarMap.entrySet().stream()
+//                .filter(entry ->entry.getValue().isPresent())
+//                .filter(entry -> {
+//                    if (Optional.of(car).get().equals(entry.getValue().get())) {
+//                        System.out.println("Car already parked..");
+//                        return false;
+//                    }
+//                    return true;
+//                });
+
+        for (int i = 1; i <= capacity; i++) {
+            if (slotCarMap.get(i).isPresent() && Optional.of(car).get().equals(slotCarMap.get(i).get())) {
+                System.out.println("Car already parked..");
+                return false;
+            }
         }
+        slotCarMap.put(freeSlot, Optional.of(car));
+        availability--;
+        parkingSlot.removeSlot(freeSlot);
+        return true;
     }
 
-    public void leave(int slot) {
+    public boolean leave(int slot) {
         if (availability == capacity) {
             System.out.println("No car parked yet..");
-        }
-        else if (slotCarMap.get(slot) == null) {
+            return false;
+        } else if (!slotCarMap.get(slot).isPresent()) {
             System.out.println("No Car parked in this slot..");
+            return false;
         } else {
-            slotCarMap.put(slot, null);
+            slotCarMap.put(slot, Optional.empty());
             availability++;
             parkingSlot.addSlot(slot);
+            return true;
         }
     }
 
@@ -69,11 +89,38 @@ public class ParkingManager {
             System.out.println("Parking slots empty..");
         } else {
             System.out.println("Slot no. \t Registration No \t Colour");
-            slotCarMap.entrySet().stream().forEach(entry -> {
-                if (null != entry.getValue()) {
-                    System.out.println(entry.getKey() + "\t" + entry.getValue().getNumber() + "\t" + entry.getValue().getColor());
-                }
+            slotCarMap.forEach((key, value) -> {
+                value.ifPresent(t -> System.out.println(key
+                        + "\t"
+                        + t.getNumber()
+                        + "\t"
+                        + t.getColor()));
             });
         }
+    }
+
+    public List<String> getCarParkedWithColor(String color) {
+        return slotCarMap.values().stream()
+                .filter(value -> value.isPresent() && value.get().getColor().equals(color))
+                .map(tOptional -> tOptional.get().getNumber())
+                .collect(Collectors.toList());
+    }
+
+    public int getSlotOfCarWithColor(String color) {
+        return slotCarMap.entrySet().stream()
+                .filter(entry -> entry.getValue().isPresent())
+                .filter(entry -> entry.getValue().get().getColor().equals(color))
+                .map(Map.Entry::getKey)
+                .findAny()
+                .orElse(-1);
+    }
+
+    public int getSlotForRegistrationNumber(String carNum) {
+        return slotCarMap.entrySet().stream()
+                .filter(entry -> entry.getValue().isPresent())
+                .filter(entry -> entry.getValue().get().getNumber().equals(carNum))
+                .map(Map.Entry::getKey)
+                .findAny()
+                .orElse(-1);
     }
 }

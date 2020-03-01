@@ -2,48 +2,119 @@ import model.Car;
 import service.ParkingService;
 import service.ParkingServiceImpl;
 
-import java.util.Scanner;
+import java.io.*;
 
 public class ParkingLotApp {
 
+    public static ParkingService parkingService = new ParkingServiceImpl();
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        BufferedReader bufferedReader;
         System.out.println("Parking lot application started: ");
-        ParkingService parkingService = new ParkingServiceImpl();
 
-        while(!"exit".equals(scanner.nextLine())) {
-            String input = scanner.nextLine().trim();
-            String[] arr = input.split(" ");
-            if (arr.length > 1) {
-                if (arr[0].equals("create")) {
-                    // create a parking lot for given capacity
-                    int capacity = Integer.parseInt(arr[1]);
-                    parkingService.createParkingLot(capacity);
+        // Command line inputs
+        if (args.length == 0) {
+            bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+            try {
+                String command = bufferedReader.readLine().trim();
+                while (!"exit".equals(command)) {
+                    if (command.isEmpty()) {
+                        System.out.println("Enter exit to end application..");
+                    } else if (validateCommand(command)) {
+                        executeCommand(command.split(" "));
+                    }
+                    command = bufferedReader.readLine().trim();
                 }
-                if (arr[0].equals("park")) {
-                    // park a car in the nearest available slot
-                    String number = arr[1];
-                    String color = arr[2];
-                    Car car = new Car(number, color);
-                    parkingService.park(car);
-                }
-                if (arr[0].equals("leave")) {
-                    // empty the parking slot
-                    int slot = Integer.parseInt(arr[1]);
-                    parkingService.leave(slot);
-                }
-                if (arr[0].equals("status")) {
-                    // get current status of parking lot
-                }
-
-                //todo: create logic to get queries
-            } else if (arr.length == 1) {
-                // check if valid path to file is entered or not
-
-                //if yes then read the file and continue the process
-            } else if (arr.length == 0) {
-                System.out.println("Enter exit to exit application..");
+            } catch (IOException e) {
+                System.out.println("IO exception");
+                e.printStackTrace();
             }
         }
+        // Command inputs through file
+        else if (args.length == 1) {
+            // File read and implement
+            File file = new File(args[0]);
+            String command;
+            try {
+                FileReader fileReader = new FileReader(file);
+                bufferedReader = new BufferedReader(fileReader);
+                command = bufferedReader.readLine().trim();
+                while (!command.equals("exit")) {
+                    if (!command.isEmpty() && validateCommand(command)) {
+                        executeCommand(command.split(" "));
+                    }
+                    command = bufferedReader.readLine().trim();
+                }
+            } catch (IOException e) {
+                System.out.println("File not found!!");
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Invalid input arguments..");
+        }
+    }
+
+    public static Boolean validateCommand(String command) {
+        String[] inputs = command.split(" ");
+        boolean valid = false;
+        switch (inputs.length) {
+            case 1:
+                if (inputs[0].equals("status")) {
+                    valid = true;
+                }
+                break;
+            case 2:
+                if (inputs[0].equals("create_parking_lot")
+                        || inputs[0].equals("leave")
+                        || inputs[0].equals("registration_numbers_for_cars_with_colour")
+                        || inputs[0].equals("slot_numbers_for_cars_with_colour")
+                        || inputs[0].equals("slot_number_for_registration_number"))
+                    valid = true;
+                break;
+            case 3:
+                if (inputs[0].equals("park"))
+                    valid = true;
+                break;
+        }
+        if (!valid) {
+            System.out.println("No such command found: " + inputs[0]);
+        }
+        return valid;
+    }
+
+    public static void executeCommand(String[] inputs) {
+        switch (inputs[0]) {
+            case "create_parking_lot":
+                // create a parking lot for given capacity
+                int capacity = Integer.parseInt(inputs[1]);
+                parkingService.createParkingLot(capacity);
+                break;
+            case "park":
+                // park a car in the nearest available slot
+                parkingService.park(new Car(inputs[1], inputs[2]));
+                break;
+            case "leave":
+                // empty the parking slot
+                int slot = Integer.parseInt(inputs[1]);
+                parkingService.leave(slot);
+                break;
+            case "status":
+                // get current status of parking lot
+                parkingService.status();
+                break;
+            case "registration_numbers_for_cars_with_colour":
+                parkingService.getCarParkedWithColor(inputs[1]);
+                break;
+            case "slot_numbers_for_cars_with_colour":
+                parkingService.getSlotOfCarWithColor(inputs[1]);
+                break;
+            case "slot_number_for_registration_number":
+                parkingService.getSlotForRegistrationNumber(inputs[1]);
+                break;
+            default:
+                System.out.println("Invalid ");
+                break;
+        }
+
     }
 }
