@@ -41,46 +41,34 @@ public class ParkingManager<T extends Car> {
 
     public Boolean park(T car) {
         if (this.availability == 0) {
-            System.out.println("No parking slots available");
+            System.out.println("Sorry, parking lot is full");
             return false;
         }
         // check for the slot availability in tree set
         int freeSlot = parkingSlot.getFreeSlot();
 
-//        slotCarMap.entrySet().stream()
-//                .filter(entry ->entry.getValue().isPresent())
-//                .filter(entry -> {
-//                    if (Optional.of(car).get().equals(entry.getValue().get())) {
-//                        System.out.println("Car already parked..");
-//                        return false;
-//                    }
-//                    return true;
-//                });
-
         for (int i = 1; i <= capacity; i++) {
             if (slotCarMap.get(i).isPresent() && Optional.of(car).get().equals(slotCarMap.get(i).get())) {
-                System.out.println("Car already parked..");
+                System.out.println("Car already parked");
                 return false;
             }
         }
         slotCarMap.put(freeSlot, Optional.of(car));
         availability--;
         parkingSlot.removeSlot(freeSlot);
-        System.out.println("Car already parked..");
+        System.out.println("Allocated slot number: " + freeSlot);
         return true;
     }
 
     public boolean leave(int slot) {
-        if (availability == capacity) {
-            System.out.println("No car parked yet..");
-            return false;
-        } else if (!slotCarMap.get(slot).isPresent()) {
-            System.out.println("No Car parked in this slot..");
+        if (!slotCarMap.get(slot).isPresent()) {
+            System.out.println("No Car parked in this slot");
             return false;
         } else {
             slotCarMap.put(slot, Optional.empty());
             availability++;
             parkingSlot.addSlot(slot);
+            System.out.println("Slot number " + slot + " is free");
             return true;
         }
     }
@@ -89,14 +77,22 @@ public class ParkingManager<T extends Car> {
         if (availability == capacity) {
             System.out.println("Parking slots empty..");
         } else {
-            System.out.println("Slot no. \t Registration No \t Colour");
+            StringBuilder sb = new StringBuilder();
+//            sb.append("Slot No.    Registration No    Colour\n");
+//            System.out.println("Slot No.\tRegistration No.\tColor");
+            sb.append(String.format("%-12s", "Slot No."));
+            sb.append(String.format("%-15s", "Registration No"));
+            sb.append(String.format("%10s", "Color"));
+            sb.append("\n");
             slotCarMap.forEach((key, value) -> {
-                value.ifPresent(t -> System.out.println(key
-                        + "\t"
-                        + t.getNumber()
-                        + "\t"
-                        + t.getColor()));
+                value.ifPresent(t -> {
+                    sb.append(String.format("%-12s", key));
+                    sb.append(String.format("%-15s", t.getNumber()));
+                    sb.append(String.format("%10s", t.getColor()));
+                    sb.append("\n");
+                });
             });
+            System.out.print(sb);
         }
     }
 

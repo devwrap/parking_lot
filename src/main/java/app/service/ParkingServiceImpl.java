@@ -10,22 +10,22 @@ public class ParkingServiceImpl implements ParkingService {
 
     public void createParkingLot(int capacity) {
         if (parkingManager != null) {
-            System.out.println("parking lot already created!!");
+            System.out.println("Sorry, parking lot already created");
         } else {
             this.parkingManager = ParkingManager.getInstance(capacity);
-            System.out.println("Created a parking lot with " + capacity + "slots");
+            System.out.println("Created a parking lot with " + capacity + " slots");
         }
     }
 
     public void park(Car car) {
-        if (checkParkingCreation() && this.parkingManager.park(car)) {
-            System.out.println("Car parked: " + car.getNumber());
+        if (checkParkingCreation()) {
+            parkingManager.park(car);
         }
     }
 
     public void leave(int slot) {
-        if (checkParkingCreation() && parkingManager.leave(slot)) {
-            System.out.println("Slot: " + slot + " is available now");
+        if (checkParkingCreation()) {
+            parkingManager.leave(slot);
         }
     }
 
@@ -40,7 +40,7 @@ public class ParkingServiceImpl implements ParkingService {
         if (checkParkingCreation()) {
             List<String> carListWithColor = parkingManager.getCarParkedWithColor(color);
             if(carListWithColor.size() != 0) {
-                System.out.println(String.join(",", carListWithColor));
+                System.out.println(String.join(", ", carListWithColor));
             } else {
                 System.out.println("No cars found");
             }
@@ -52,9 +52,23 @@ public class ParkingServiceImpl implements ParkingService {
         if (checkParkingCreation()) {
             List<Integer> slots = parkingManager.getSlotOfCarWithColor(color);
             if (slots.size() > 0) {
-                slots.forEach(slot -> System.out.print(slot + ", "));
-            } else {
-                System.out.println("No car of given color is parked");
+
+//                slots.forEach(slot -> {
+//
+//                    System.out.print(slot + ", ");
+//                });
+                StringBuilder sb = new StringBuilder();
+                int count = 0;
+                for(int slot : slots) {
+                    if(count == slots.size()-1) {
+                        sb.append(slot);
+                    } else {
+                        sb.append(slot).append(", ");
+                    }
+                }
+            }
+            else {
+                System.out.println("No cars found");
             }
         }
     }
@@ -66,14 +80,14 @@ public class ParkingServiceImpl implements ParkingService {
             if (slot != -1) {
                 System.out.println(slot);
             } else {
-                System.out.println("No car of given color is parked");
+                System.out.println("No cars found");
             }
         }
     }
 
     Boolean checkParkingCreation() {
         if (this.parkingManager == null) {
-            System.out.println("parking lot has not been created!!");
+            System.out.println("No parking lot has not been created");
             return false;
         }
         return true;
