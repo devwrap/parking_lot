@@ -1,0 +1,8 @@
+0000000000000000000000000000000000000000 4a08d65ddb4b540babd9a81a0213216e748b2cab Devansh <devansh@Devwrap.local> 1582992676 +0530	commit (initial): First iteration with basic functionality: create, park, leave and status
+4a08d65ddb4b540babd9a81a0213216e748b2cab a87efe80f5e5179e68cff998121e2a3459e85ad1 Devansh <devansh@Devwrap.local> 1583048731 +0530	commit: * Segregate input on basis of command line and file
+a87efe80f5e5179e68cff998121e2a3459e85ad1 7d51939694fbf8f9a5129fa7f96ddacc2baffc0f Devansh <devansh@Devwrap.local> 1583065506 +0530	commit: Added main class manifest in order for jar to execute
+7d51939694fbf8f9a5129fa7f96ddacc2baffc0f 3e06f18cf5c906e913fe06ea0e54f418fcb363f8 Devansh <devansh@Devwrap.local> 1583073182 +0530	commit: Adding added unit tests for service methods
+3e06f18cf5c906e913fe06ea0e54f418fcb363f8 7824b6ddd9a23f644c9200e3fee378577fe31469 Devansh <devansh@Devwrap.local> 1583078760 +0530	commit: Fixed program output to pass the functional test cases
+7824b6ddd9a23f644c9200e3fee378577fe31469 5949ed2a492748b037836d9a62f14cf0071072f5 Devansh <devansh@Devwrap.local> 1583085250 +0530	commit (amend): Fixed program output to pass the functional test cases
+5949ed2a492748b037836d9a62f14cf0071072f5 de7c05ac07c595630181988b82747fa1b97d56d6 Devansh <devansh@Devwrap.local> 1583088854 +0530	commit: Modularised command execution
+de7c05ac07c595630181988b82747fa1b97d56d6 91098fba5163189226f8473fcab972b1c8574300 Devansh <devansh@Devwrap.local> 1583089376 +0530	commit (amend): Modularised command execution

@@ -1,0 +1,19 @@
+Modularised command execution
+Created constants class
+Clean up
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# Date:      Mon Mar 2 00:24:14 2020 +0530
+# Committer: Devansh <devansh@Devwrap.local>
+#
+# On branch master
+# Changes to be committed:
+#	modified:   functional_spec/.rspec_status
+#	modified:   src/main/java/app/ParkingLotApp.java
+#	new file:   src/main/java/app/constants/Constants.java
+#	new file:   src/main/java/app/execute/ExecuteCommand.java
+#	modified:   src/main/java/app/service/ParkingServiceImpl.java
+#	modified:   src/test/java/ParkingLotTests.java
+#

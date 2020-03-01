@@ -1,0 +1,10 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+	ignorecase = true
+	precomposeunicode = true
+[remote "devwrap"]
+	url = https://github.com/devwrap/parking_lot.git
+	fetch = +refs/heads/*:refs/remotes/parking_lot/*
