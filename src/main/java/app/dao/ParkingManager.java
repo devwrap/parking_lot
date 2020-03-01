@@ -1,7 +1,7 @@
-package dao;
+package app.dao;
 
-import model.Car;
-import model.ParkingSlot;
+import app.model.Car;
+import app.model.ParkingSlot;
 
 import java.util.List;
 import java.util.Map;
@@ -66,6 +66,7 @@ public class ParkingManager<T extends Car> {
         slotCarMap.put(freeSlot, Optional.of(car));
         availability--;
         parkingSlot.removeSlot(freeSlot);
+        System.out.println("Car already parked..");
         return true;
     }
 
@@ -106,13 +107,12 @@ public class ParkingManager<T extends Car> {
                 .collect(Collectors.toList());
     }
 
-    public int getSlotOfCarWithColor(String color) {
+    public List<Integer> getSlotOfCarWithColor(String color) {
         return slotCarMap.entrySet().stream()
                 .filter(entry -> entry.getValue().isPresent())
                 .filter(entry -> entry.getValue().get().getColor().equals(color))
                 .map(Map.Entry::getKey)
-                .findAny()
-                .orElse(-1);
+                .collect(Collectors.toList());
     }
 
     public int getSlotForRegistrationNumber(String carNum) {

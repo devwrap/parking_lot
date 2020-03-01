@@ -1,7 +1,7 @@
-package service;
+package app.service;
 
-import dao.ParkingManager;
-import model.Car;
+import app.dao.ParkingManager;
+import app.model.Car;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class ParkingServiceImpl implements ParkingService {
             System.out.println("parking lot already created!!");
         } else {
             this.parkingManager = ParkingManager.getInstance(capacity);
-            System.out.println("Created Parking lot of capacity: " + capacity);
+            System.out.println("Created a parking lot with " + capacity + "slots");
         }
     }
 
@@ -50,9 +50,9 @@ public class ParkingServiceImpl implements ParkingService {
     @Override
     public void getSlotOfCarWithColor(String color) {
         if (checkParkingCreation()) {
-            int slot = parkingManager.getSlotOfCarWithColor(color);
-            if (slot != -1) {
-                System.out.println(slot);
+            List<Integer> slots = parkingManager.getSlotOfCarWithColor(color);
+            if (slots.size() > 0) {
+                slots.forEach(slot -> System.out.print(slot + ", "));
             } else {
                 System.out.println("No car of given color is parked");
             }

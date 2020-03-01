@@ -1,6 +1,6 @@
-package service;
+package app.service;
 
-import model.Car;
+import app.model.Car;
 
 public interface ParkingService {
     void createParkingLot(int capacity);

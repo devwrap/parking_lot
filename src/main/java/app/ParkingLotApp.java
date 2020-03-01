@@ -1,6 +1,8 @@
-import model.Car;
-import service.ParkingService;
-import service.ParkingServiceImpl;
+package app;
+
+import app.model.Car;
+import app.service.ParkingService;
+import app.service.ParkingServiceImpl;
 
 import java.io.*;
 
@@ -33,7 +35,9 @@ public class ParkingLotApp {
         // Command inputs through file
         else if (args.length == 1) {
             // File read and implement
-            File file = new File(args[0]);
+//            String currentDirectory = System.getProperty("user.dir");
+            String fileDir = args[0];
+            File file = new File(fileDir);
             String command;
             try {
                 FileReader fileReader = new FileReader(file);
@@ -43,6 +47,7 @@ public class ParkingLotApp {
                     if (!command.isEmpty() && validateCommand(command)) {
                         executeCommand(command.split(" "));
                     }
+//                    if (bufferedReader.)
                     command = bufferedReader.readLine().trim();
                 }
             } catch (IOException e) {
@@ -77,7 +82,7 @@ public class ParkingLotApp {
                 break;
         }
         if (!valid) {
-            System.out.println("No such command found: " + inputs[0]);
+            System.out.println("Invalid command!");
         }
         return valid;
     }
