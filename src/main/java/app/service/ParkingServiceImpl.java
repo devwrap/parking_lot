@@ -42,7 +42,7 @@ public class ParkingServiceImpl implements ParkingService {
             if(carListWithColor.size() != 0) {
                 System.out.println(String.join(", ", carListWithColor));
             } else {
-                System.out.println("No cars found");
+                System.out.println("Not found");
             }
         }
     }
@@ -65,10 +65,12 @@ public class ParkingServiceImpl implements ParkingService {
                     } else {
                         sb.append(slot).append(", ");
                     }
+                    count ++;
                 }
+                System.out.println(sb);
             }
             else {
-                System.out.println("No cars found");
+                    System.out.println("Not found");
             }
         }
     }
@@ -80,7 +82,7 @@ public class ParkingServiceImpl implements ParkingService {
             if (slot != -1) {
                 System.out.println(slot);
             } else {
-                System.out.println("No cars found");
+                System.out.println("Not found");
             }
         }
     }

@@ -16,7 +16,6 @@ public class ParkingLotTests {
     @Before
     public void init()
     {
-//        parkingLevel = 1;
         System.setOut(new PrintStream(output));
     }
 
@@ -85,7 +84,7 @@ public class ParkingLotTests {
         parkingService.park(new Car("KA-01-HH-1234", "White"));
         output.reset();
         parkingService.status();
-        String status = "Slot No.    Registration No     Color\n1           KA-01-HH-1234       White\n";
+        String status = "Slot No.    Registration No    Colour\n1           KA-01-HH-1234      White\n";
         assertTrue(status.equalsIgnoreCase(output.toString()));
     }
 
@@ -99,7 +98,9 @@ public class ParkingLotTests {
         parkingService.park(new Car("3","c"));
         output.reset();
         parkingService.status();
-        String status = "Slot No.    Registration No     Color\n1           3                       c\n2           2                       b\n";
+        String status = "Slot No.    Registration No    Colour\n" +
+                "1           3                  c\n" +
+                "2           2                  b\n";
         assertTrue(status.equalsIgnoreCase(output.toString()));
     }
 
@@ -115,7 +116,7 @@ public class ParkingLotTests {
         assertTrue("1, 2".equalsIgnoreCase(output.toString().trim()));
         output.reset();
         parkingService.getCarParkedWithColor("z");
-        assertTrue("No cars found".equalsIgnoreCase(output.toString().trim()));
+        assertTrue("Not found".equalsIgnoreCase(output.toString().trim()));
     }
 
     @Test
@@ -130,7 +131,7 @@ public class ParkingLotTests {
         assertTrue("1, 3".equalsIgnoreCase(output.toString().trim()));
         output.reset();
         parkingService.getCarParkedWithColor("z");
-        assertTrue("No cars found".equalsIgnoreCase(output.toString().trim()));
+        assertTrue("Not found".equalsIgnoreCase(output.toString().trim()));
     }
 
     @Test
@@ -145,6 +146,6 @@ public class ParkingLotTests {
         assertTrue("1".equalsIgnoreCase(output.toString().trim()));
         output.reset();
         parkingService.getSlotForRegistrationNumber("19");
-        assertTrue("No cars found".equalsIgnoreCase(output.toString().trim()));
+        assertTrue("Not found".equalsIgnoreCase(output.toString().trim()));
     }
 }

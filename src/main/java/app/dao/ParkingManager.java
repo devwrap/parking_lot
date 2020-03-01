@@ -81,14 +81,14 @@ public class ParkingManager<T extends Car> {
 //            sb.append("Slot No.    Registration No    Colour\n");
 //            System.out.println("Slot No.\tRegistration No.\tColor");
             sb.append(String.format("%-12s", "Slot No."));
-            sb.append(String.format("%-15s", "Registration No"));
-            sb.append(String.format("%10s", "Color"));
+            sb.append(String.format("%-19s", "Registration No"));
+            sb.append(String.format("%-6s", "Colour"));
             sb.append("\n");
             slotCarMap.forEach((key, value) -> {
                 value.ifPresent(t -> {
                     sb.append(String.format("%-12s", key));
-                    sb.append(String.format("%-15s", t.getNumber()));
-                    sb.append(String.format("%10s", t.getColor()));
+                    sb.append(String.format("%-19s", t.getNumber()));
+                    sb.append(t.getColor());
                     sb.append("\n");
                 });
             });

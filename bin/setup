@@ -2,5 +2,6 @@
 # * Install dependencies
 # * Build/Compile
 # * Run Test Suit to validate
-# mvn clean install
+mvn clean install
+mvn -Dtest=ParkingLotTests test
 mvn clean package

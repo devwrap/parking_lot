@@ -12,8 +12,7 @@ public class ParkingLotApp {
 
     public static void main(String[] args) {
         BufferedReader bufferedReader;
-        System.out.println("Parking lot application started: ");
-
+//        System.out.println("Parking lot application started: ");
         // Command line inputs
         if (args.length == 0) {
             bufferedReader = new BufferedReader(new InputStreamReader(System.in));
@@ -38,17 +37,15 @@ public class ParkingLotApp {
 //            String currentDirectory = System.getProperty("user.dir");
             String fileDir = args[0];
             File file = new File(fileDir);
-            String command;
+            String command = null;
             try {
                 FileReader fileReader = new FileReader(file);
                 bufferedReader = new BufferedReader(fileReader);
-                command = bufferedReader.readLine().trim();
-                while (!command.equals("exit")) {
+                while ((command = bufferedReader.readLine()) != null && !command.equals("exit")) {
+                    command = command.trim();
                     if (!command.isEmpty() && validateCommand(command)) {
                         executeCommand(command.split(" "));
                     }
-//                    if (bufferedReader.)
-                    command = bufferedReader.readLine().trim();
                 }
             } catch (IOException e) {
                 System.out.println("File not found!!");
