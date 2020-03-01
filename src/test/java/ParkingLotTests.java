@@ -11,11 +11,10 @@ import static org.junit.Assert.assertTrue;
 
 public class ParkingLotTests {
 
-    private final ByteArrayOutputStream output	= new ByteArrayOutputStream();
+    private final ByteArrayOutputStream output = new ByteArrayOutputStream();
 
     @Before
-    public void init()
-    {
+    public void init() {
         System.setOut(new PrintStream(output));
     }
 
@@ -92,10 +91,10 @@ public class ParkingLotTests {
     public void nearestParkingSlotAllotmentTest() {
         ParkingService parkingService = new ParkingServiceImpl();
         parkingService.createParkingLot(3);
-        parkingService.park(new Car("1","a"));
-        parkingService.park(new Car("2","b"));
+        parkingService.park(new Car("1", "a"));
+        parkingService.park(new Car("2", "b"));
         parkingService.leave(1);
-        parkingService.park(new Car("3","c"));
+        parkingService.park(new Car("3", "c"));
         output.reset();
         parkingService.status();
         String status = "Slot No.    Registration No    Colour\n" +
@@ -108,9 +107,9 @@ public class ParkingLotTests {
     public void getRegistrationNumberWithColorTest() {
         ParkingService parkingService = new ParkingServiceImpl();
         parkingService.createParkingLot(3);
-        parkingService.park(new Car("1","a"));
-        parkingService.park(new Car("2","a"));
-        parkingService.park(new Car("3","b"));
+        parkingService.park(new Car("1", "a"));
+        parkingService.park(new Car("2", "a"));
+        parkingService.park(new Car("3", "b"));
         output.reset();
         parkingService.getCarParkedWithColor("a");
         assertTrue("1, 2".equalsIgnoreCase(output.toString().trim()));
@@ -123,9 +122,9 @@ public class ParkingLotTests {
     public void getSlotNumbersWithColor() {
         ParkingService parkingService = new ParkingServiceImpl();
         parkingService.createParkingLot(3);
-        parkingService.park(new Car("1","a"));
-        parkingService.park(new Car("2","b"));
-        parkingService.park(new Car("3","a"));
+        parkingService.park(new Car("1", "a"));
+        parkingService.park(new Car("2", "b"));
+        parkingService.park(new Car("3", "a"));
         output.reset();
         parkingService.getCarParkedWithColor("a");
         assertTrue("1, 3".equalsIgnoreCase(output.toString().trim()));
@@ -138,9 +137,9 @@ public class ParkingLotTests {
     public void getSlotNumberForCar() {
         ParkingService parkingService = new ParkingServiceImpl();
         parkingService.createParkingLot(3);
-        parkingService.park(new Car("1","a"));
-        parkingService.park(new Car("2","b"));
-        parkingService.park(new Car("3","a"));
+        parkingService.park(new Car("1", "a"));
+        parkingService.park(new Car("2", "b"));
+        parkingService.park(new Car("3", "a"));
         output.reset();
         parkingService.getSlotForRegistrationNumber("1");
         assertTrue("1".equalsIgnoreCase(output.toString().trim()));

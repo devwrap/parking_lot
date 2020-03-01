@@ -31,7 +31,7 @@ public class ParkingServiceImpl implements ParkingService {
 
     public void status() {
         if (checkParkingCreation()) {
-           parkingManager.status();
+            parkingManager.status();
         }
     }
 
@@ -39,7 +39,7 @@ public class ParkingServiceImpl implements ParkingService {
     public void getCarParkedWithColor(String color) {
         if (checkParkingCreation()) {
             List<String> carListWithColor = parkingManager.getCarParkedWithColor(color);
-            if(carListWithColor.size() != 0) {
+            if (carListWithColor.size() != 0) {
                 System.out.println(String.join(", ", carListWithColor));
             } else {
                 System.out.println("Not found");
@@ -52,25 +52,19 @@ public class ParkingServiceImpl implements ParkingService {
         if (checkParkingCreation()) {
             List<Integer> slots = parkingManager.getSlotOfCarWithColor(color);
             if (slots.size() > 0) {
-
-//                slots.forEach(slot -> {
-//
-//                    System.out.print(slot + ", ");
-//                });
                 StringBuilder sb = new StringBuilder();
                 int count = 0;
-                for(int slot : slots) {
-                    if(count == slots.size()-1) {
+                for (int slot : slots) {
+                    if (count == slots.size() - 1) {
                         sb.append(slot);
                     } else {
                         sb.append(slot).append(", ");
                     }
-                    count ++;
+                    count++;
                 }
                 System.out.println(sb);
-            }
-            else {
-                    System.out.println("Not found");
+            } else {
+                System.out.println("Not found");
             }
         }
     }
